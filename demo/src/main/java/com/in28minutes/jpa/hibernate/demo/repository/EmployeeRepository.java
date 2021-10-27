@@ -11,16 +11,27 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.in28minutes.jpa.hibernate.demo.entity.Course;
+import com.in28minutes.jpa.hibernate.demo.entity.Employee;
 import com.in28minutes.jpa.hibernate.demo.entity.Review;
 
 @Repository
 @Transactional
-public class CourseRepository {
+public class EmployeeRepository {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	EntityManager em;
+
+	//insert an employee
+	public void insert( Employee employee ) {
+		em.persist(employee);
+	}
+	
+	//retrieve all employees 
+	public List<Employee> retrieveAllEmployees() {
+		return em.createQuery(" select e from Employee e", Employee.class).getResultList();
+	}
 	
 	public Course findById( Long id ) {
 		return em.find( Course.class, id);
