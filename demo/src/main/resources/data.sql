@@ -1,6 +1,23 @@
-insert into course(id, name, created_date, last_updated_date) values (10001, 'JPA in 50 Steps', sysdate(), sysdate() );
-insert into course(id, name, created_date, last_updated_date) values (10002, 'Spring in 50 Steps', sysdate(), sysdate() );
-insert into course(id, name, created_date, last_updated_date) values (10003, 'Spring Boot in 100 Steps', sysdate(), sysdate() );
+insert into course(id, name, created_date, last_updated_date, is_delete ) values (10001, 'JPA in 50 Steps', sysdate(), sysdate(), false );
+insert into course(id, name, created_date, last_updated_date, is_delete) values (10002, 'Spring in 50 Steps', sysdate(), sysdate(), false );
+insert into course(id, name, created_date, last_updated_date, is_delete) values (10003, 'Spring Boot in 100 Steps', sysdate(), sysdate(), false );
+
+
+-- insert into course(id, name, created_date, last_updated_date) values (10004, 'Dummy1', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10005, 'Dummy2', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10006, 'Dummy3', sysdate(), sysdate() );
+
+-- insert into course(id, name, created_date, last_updated_date) values (10007, 'Dummy4', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10008, 'Dummy5', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10009, 'Dummy6', sysdate(), sysdate() );
+
+-- insert into course(id, name, created_date, last_updated_date) values (10010, 'Dummy7', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10011, 'Dummy8', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10012, 'Dummy9', sysdate(), sysdate() );
+
+-- insert into course(id, name, created_date, last_updated_date) values (10013, 'Dummy10', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10014, 'Dummy11', sysdate(), sysdate() );
+-- insert into course(id, name, created_date, last_updated_date) values (10015, 'Dummy12', sysdate(), sysdate() );
 
 
 insert into passport(id, number)
@@ -18,11 +35,11 @@ insert into student(id, name, passport_id)
 values(20003,'Jane', 40003);
 
 insert into review(id, rating, description, course_id )
-values(50001, '5', 'Great Course', 10001);
+values(50001, 'FIVE', 'Great Course', 10001);
 insert into review(id, rating, description, course_id )
-values(50002, '4', 'Wonderful Course', 10002);
+values(50002, 'FOUR', 'Wonderful Course', 10002);
 insert into review(id, rating, description, course_id )
-values(50003, '5', 'Awesome Course', 10003);
+values(50003, 'FIVE', 'Awesome Course', 10003);
 
 insert into student_course(student_id, course_id)
 values(20001 , 10001);

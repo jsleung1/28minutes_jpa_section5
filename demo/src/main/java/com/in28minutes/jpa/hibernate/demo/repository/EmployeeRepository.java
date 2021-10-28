@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.in28minutes.jpa.hibernate.demo.entity.Course;
 import com.in28minutes.jpa.hibernate.demo.entity.Employee;
 import com.in28minutes.jpa.hibernate.demo.entity.Review;
+import com.in28minutes.jpa.hibernate.demo.entity.ReviewRating;
 
 @Repository
 @Transactional
@@ -83,8 +84,8 @@ public class EmployeeRepository {
 		Course course = findById(10003L);
 		logger.info("course.getReviews() -> {}",course.getReviews());
 		
-		Review review1 = new Review("5", "Great Hands-on Stuff.");
-		Review review2 = new Review("5", "Hatsoff.");
+		Review review1 = new Review(ReviewRating.FIVE, "Great Hands-on Stuff.");
+		Review review2 = new Review(ReviewRating.FIVE, "Hatsoff.");
 		review1.setCourse(course);
 		review2.setCourse(course);
 		

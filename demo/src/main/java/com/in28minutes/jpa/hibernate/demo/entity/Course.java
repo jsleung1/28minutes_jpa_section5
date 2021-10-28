@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,10 +15,17 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 // @NamedQuery(name="query_get_all_courses", query="Select c From Course")
@@ -27,8 +35,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 		@NamedQuery(name="query_get_100_Step_courses", query="Select c From Course c where name like '%100 Steps'")
 	}
 )
+@Cacheable
+@SQLDelete(sql="update course set is_delete=true where id=?")
+@Where(clause="is_delete = false")
 public class Course {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(Course.class);
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -41,6 +54,7 @@ public class Course {
 	private List<Review> reviews = new ArrayList<>();
 	
 	@ManyToMany(mappedBy="courses") // students owning side of the relationship.
+	@JsonIgnore
 	private List<Student> students = new ArrayList<>();
 	
 	@UpdateTimestamp
@@ -48,6 +62,14 @@ public class Course {
 	
 	@CreationTimestamp
 	private LocalDateTime createdDate;
+	
+	private boolean is_delete; 
+	
+	@PreRemove
+	private void preRemove() {
+		LOGGER.info("Setting is_delete = true");
+		this.is_delete = true;
+	}
 	
 	protected Course() {
 	}
@@ -92,7 +114,8 @@ public class Course {
 
 	@Override
 	public String toString() {
-		return String.format("Course [id=%s, name=%s]", id, name);
+		// return String.format("Course [%s] Review[%s]", name, reviews ); // reviews result in select * from reviews;
+		return String.format("Course [%s]", name );
 	}
 	
 	

@@ -32,11 +32,26 @@ class CourseRepositoryTest {
 	EntityManager em;
 	
 	@Test
-	void contextLoads() {
+	void findById_basic() {
 		// Course course = repository.findById(10001L);
 		// assertEquals("JPA in 50 Steps", course.getName() );
 		Course course = repository.findById(10002L);
 		assertEquals("Spring in 50 Steps", course.getName() );			  
+	}
+	
+	@Test
+	// @Transactional
+	void findById_firstLevelCacheDemo() {
+		// Course course = repository.findById(10001L);
+		// assertEquals("JPA in 50 Steps", course.getName() );
+		Course course = repository.findById(10002L);
+		logger.info("First Course Retrieved {}", course );
+	
+		Course course1 = repository.findById(10002L);
+		logger.info("First Course Retrieved again {}", course );
+
+		assertEquals("Spring in 50 Steps", course.getName() );	
+		assertEquals("Spring in 50 Steps", course1.getName() );			  
 	}
 	
 	@Test
