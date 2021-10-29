@@ -3,7 +3,11 @@ package com.in28minutes.jpa.hibernate.demo;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.Subgraph;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
@@ -37,6 +41,46 @@ class CourseRepositoryTest {
 		// assertEquals("JPA in 50 Steps", course.getName() );
 		Course course = repository.findById(10002L);
 		assertEquals("Spring in 50 Steps", course.getName() );			  
+	}
+	
+	@Test
+	@Transactional
+	public void creatingNPlusOneProblem() {
+		List<Course> courses = 
+			em.createNamedQuery("query_get_all_courses", Course.class).getResultList();
+		for (Course course : courses ) {
+			// Lazy fetch causes Hibernate N + 1 problem
+			logger.info("Course -> {} Students -> {}", course, course.getStudents());
+		}
+	}
+	
+	@Test
+	@Transactional
+	public void solvingNPlusOneProblem_EntityGraph() {
+		EntityGraph<Course> entityGraph = em.createEntityGraph(Course.class);
+		Subgraph<Object> subGraph = entityGraph.addSubgraph("students");
+		
+		List<Course> courses = 
+			em.createNamedQuery("query_get_all_courses", Course.class)
+			.setHint("javax.persistence.loadgraph", entityGraph)
+			.getResultList();
+		for (Course course : courses ) {
+			// Lazy fetch causes Hibernate N + 1 problem
+			logger.info("Course -> {} Students -> {}", course, course.getStudents());
+		}
+	}
+	
+	@Test
+	@Transactional
+	public void solvingNPlusOneProblem_joinFetch() {
+		
+		List<Course> courses = 
+			em.createNamedQuery("query_get_all_courses_join_fetch", Course.class)
+			.getResultList();
+		for (Course course : courses ) {
+			// Lazy fetch causes Hibernate N + 1 problem
+			logger.info("Course -> {} Students -> {}", course, course.getStudents());
+		}
 	}
 	
 	@Test
